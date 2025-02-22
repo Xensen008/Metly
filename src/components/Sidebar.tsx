@@ -14,15 +14,19 @@ const Sidebar = () => {
       <div className="flex flex-1 flex-col gap-6">
         {SidebarLinks.map((item) => {
           const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`);
-          
+
           return (
             <Link
               href={item.route}
               key={item.label}
               className={cn(
-                'flex gap-4 items-center p-4 rounded-lg justify-start',
+                'flex gap-4 items-center p-4 rounded-2xl justify-start relative',
+                'transition-all duration-300 ease-out',
+                'hover:bg-blue-1/10 hover:scale-[1.02]',
+                'before:absolute before:inset-0 before:rounded-2xl before:transition-colors before:duration-300',
                 {
-                  'bg-blue-1': isActive,
+                  'bg-blue-1 shadow-lg shadow-blue-1/20 transform': isActive,
+                  'hover:shadow-md': !isActive
                 }
               )}
             >
