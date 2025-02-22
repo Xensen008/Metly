@@ -14,6 +14,10 @@ export default {
 				'1': '#1C1F2E',
 				'2': '#161925'
 			},
+			blue:{
+				'1': '#1F8CE6',
+				'2': '#1A7ACB'
+			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
