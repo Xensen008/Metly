@@ -1,16 +1,70 @@
 'use client'
 
 import HomeCard from './HomeCard'
-import React, { use, useState } from 'react'
+import React, {useState } from 'react'
 import { useRouter } from 'next/navigation'
 import MeetingModal from './MeetingModal'
+import { useUser } from '@clerk/nextjs'
+import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
+import { toast } from "sonner"
+
+
+
 const MeetingTypeList = () => {
     const [meetingState, setMeetingState] = useState<
         'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined
     >(undefined);
     const router = useRouter()
+    const {user} = useUser()
+    const client = useStreamVideoClient()
+    const [values, setValues] = useState({
+        datetime: new Date(),
+        Description: '',
+        link: '',
+       
+    })
 
-    const createMeeting = () => {}  // Add the logic to create a meeting
+    const [callDetails, setCallDetails] = useState<Call>()
+
+
+    const createMeeting = async () => {
+        if(!client|| !user) return;
+        try {
+            if(!values.datetime){
+                toast("Please select a date and time")
+                return
+            }
+
+            const id = crypto.randomUUID();
+            const call = client.call('default', id)
+
+            if (!call) {
+                throw new Error('faild to create a call')
+            }
+
+            const startsAt = values.datetime.toISOString() || new Date().toISOString()
+            const description = values.Description || 'Instant Meeting'
+
+            await call.getOrCreate({
+                data:{
+                    starts_at: startsAt,
+                    custom:{
+                        description
+                    }
+                }
+            })
+
+            setCallDetails(call)
+
+            if(!values.Description){
+                router.push(`/meeting/${id}`)
+            }
+            toast("Meeting created successfully")
+        } catch (error) {
+            console.log(error)
+            toast("An error accured while creating the meeting")
+        }
+    } 
 
     return (
         <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">

@@ -59,16 +59,16 @@
   color: white;
 }
 
-.cl-providerIcon__github{
-  filter: invert(1);
-}
-
 .cl-logoBox {
   height: 40px;
 }
 .cl-dividerLine {
   background: #252a41;
   height: 2px;
+}
+
+.cl-providerIcon__github{
+  filter: invert(1);
 }
 
 .cl-socialButtonsIconButton {
