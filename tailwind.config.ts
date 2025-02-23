@@ -32,7 +32,7 @@ export default {
 				},
 			},
 			backgroundImage: {
-				hero: "url('/images/hero-background.png')"
+				hero: "url('/images/hero-background5.png')"
 			},
 			keyframes: {
 				'accordion-down': {
