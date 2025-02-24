@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 interface MeetingModalProps {
     isOpen: boolean;
     onClose: () => void;
-    classname?: string;
+    className?: string;
     children?: React.ReactNode;
     handleClick?: () => void;
     title: string;
@@ -19,7 +19,7 @@ interface MeetingModalProps {
 const MeetingModal = ({
     isOpen,
     onClose,
-    classname,
+    className,
     image,
     children,
     handleClick,
@@ -42,7 +42,7 @@ const MeetingModal = ({
                             <Image src={image} alt="Meeting" width={72} height={72} />
                         </div>
                     )}
-                    <h1 className={cn('text-3xl font-bold leading-[42px]', classname)}>{title}</h1>
+                    <h1 className={cn('text-3xl font-bold leading-[42px]', className)}>{title}</h1>
                     {children}
                     <Button 
                         className="bg-blue-1 rounded-xl focus-visible:ring-0 focus-visible:ring-offset-0" 
