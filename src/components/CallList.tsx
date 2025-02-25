@@ -8,7 +8,7 @@ import Loader from './Loader';
 import { useGetCalls } from '@/hooks/useGetCalls';
 import MeetingCard from './MeetingCard';
 
-const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
+const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; limit?: number }) => {
     const router = useRouter();
     const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
     const [recordings, setRecordings] = useState<CallRecording[]>([]);
@@ -46,12 +46,11 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
 
         setIsRefreshing(true);
         try {
-            // Use Promise.allSettled instead of Promise.all to prevent one failure from breaking everything
+
             const results = await Promise.allSettled(
                 callRecordings.map(meeting => safeQueryRecordings(meeting))
             );
 
-            // Extract successful results
             const callData = results
                 .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
                 .map(result => result.value);
@@ -69,20 +68,17 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
         }
     }, [type, callRecordings, safeQueryRecordings]);
 
-    // Initial fetch
     useEffect(() => {
         if (type === 'recordings') {
             refreshRecordings();
         }
     }, [type, refreshRecordings]);
 
-    // Polling for refreshes
     useEffect(() => {
         if (type === 'recordings') {
-            // Set up polling to refresh recordings every 30 seconds
             const intervalId = setInterval(() => {
                 refreshRecordings();
-            }, 30000); // 30 seconds
+            }, 120000); //2 hours
 
             return () => clearInterval(intervalId);
         }
@@ -99,18 +95,28 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
         }
     }, [type]);
 
+    // const getCalls = useCallback(() => {
+    //     switch (type) {
+    //         case 'ended':
+    //             return endedCalls || [];
+    //         case 'recordings':
+    //             return recordings;
+    //         case 'upcoming':
+    //             return upcomingCalls || [];
+    //         default:
+    //             return [];
+    //     }
+    // }, [type, endedCalls, upcomingCalls, recordings]);
     const getCalls = useCallback(() => {
-        switch (type) {
-            case 'ended':
-                return endedCalls || [];
-            case 'recordings':
-                return recordings;
-            case 'upcoming':
-                return upcomingCalls || [];
-            default:
-                return [];
-        }
-    }, [type, endedCalls, upcomingCalls, recordings]);
+        const allCalls = {
+          'ended': endedCalls || [],
+          'recordings': recordings,
+          'upcoming': upcomingCalls || [],
+        }[type] || [];
+        
+        // Apply limit if provided
+        return limit ? allCalls.slice(0, limit) : allCalls;
+      }, [type, endedCalls, upcomingCalls, recordings, limit]);
 
     const getNoCallsMessage = useCallback(() => {
         switch (type) {
