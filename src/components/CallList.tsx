@@ -8,6 +8,10 @@ import Loader from './Loader';
 import { useGetCalls } from '@/hooks/useGetCalls';
 import MeetingCard from './MeetingCard';
 
+interface QueryRecordingsResponse {
+    recordings: CallRecording[];
+}
+
 const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; limit?: number }) => {
     const router = useRouter();
     const { endedCalls, upcomingCalls, callRecordings, isLoading } = useGetCalls();
@@ -31,7 +35,7 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
     }, []);
 
     // Safely query recordings with error handling
-    const safeQueryRecordings = useCallback(async (meeting: Call) => {
+    const safeQueryRecordings = useCallback(async (meeting: Call): Promise<QueryRecordingsResponse> => {
         try {
             return await meeting.queryRecordings();
         } catch (err) {
@@ -46,13 +50,14 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
 
         setIsRefreshing(true);
         try {
-
             const results = await Promise.allSettled(
                 callRecordings.map(meeting => safeQueryRecordings(meeting))
             );
 
             const callData = results
-                .filter((result): result is PromiseFulfilledResult<any> => result.status === 'fulfilled')
+                .filter((result): result is PromiseFulfilledResult<QueryRecordingsResponse> => 
+                    result.status === 'fulfilled'
+                )
                 .map(result => result.value);
 
             const newRecordings = callData
@@ -95,18 +100,6 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
         }
     }, [type]);
 
-    // const getCalls = useCallback(() => {
-    //     switch (type) {
-    //         case 'ended':
-    //             return endedCalls || [];
-    //         case 'recordings':
-    //             return recordings;
-    //         case 'upcoming':
-    //             return upcomingCalls || [];
-    //         default:
-    //             return [];
-    //     }
-    // }, [type, endedCalls, upcomingCalls, recordings]);
     const getCalls = useCallback(() => {
         const allCalls = {
           'ended': endedCalls || [],
@@ -177,11 +170,11 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
                 {calls && calls.length > 0 ? (
                     calls.map((meeting: Call | CallRecording, index: number) => {
                         // Type guard functions for better type safety
-                        const isRecording = (m: any): m is CallRecording =>
-                            type === 'recordings' && m.hasOwnProperty('filename');
+                        const isRecording = (m: Call | CallRecording): m is CallRecording =>
+                            type === 'recordings' && 'filename' in m;
 
-                        const isCall = (m: any): m is Call =>
-                            (type === 'ended' || type === 'upcoming') && m.hasOwnProperty('id');
+                        const isCall = (m: Call | CallRecording): m is Call =>
+                            (type === 'ended' || type === 'upcoming') && 'id' in m;
 
                         const title = isRecording(meeting)
                             ? (meeting.filename?.substring(0, 20) || 'No Description')
