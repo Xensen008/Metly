@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { SidebarLinks } from '../../constant';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +24,8 @@ const MobileNav = () => {
           />
         </SheetTrigger>
         <SheetContent side="left" className="border-none bg-dark-1">
+        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+        <SheetDescription className="sr-only">Access application navigation links</SheetDescription>
           <Link href="/" className="flex items-center gap-1">
             <Image
               src="/icons/logo.svg"

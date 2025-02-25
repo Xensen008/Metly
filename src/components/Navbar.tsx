@@ -3,7 +3,6 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import MobileNav from './MobileNav'
-import { User } from 'lucide-react'
 import { SignedIn, UserButton } from '@clerk/nextjs'
 const Navbar = () => {
   return (
