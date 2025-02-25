@@ -11,42 +11,48 @@ export const useGetCalls = () => {
   useEffect(() => {
     const loadCalls = async () => {
       if (!client || !user?.id) return;
-      
-      setIsLoading(true);
 
       try {
-        // https://getstream.io/video/docs/react/guides/querying-calls/#filters
-        const { calls } = await client.queryCalls({
-          sort: [{ field: 'starts_at', direction: -1 }],
+        setIsLoading(true);
+        // Fetch calls from the Stream API
+        const response = await client.queryCalls({
           filter_conditions: {
-            starts_at: { $exists: true },
-            $or: [
-              { created_by_user_id: user.id },
-              { members: { $in: [user.id] } },
-            ],
+            created_by_user_id: user.id,
           },
+          sort: [{ field: "created_at", direction: -1 }],
+          limit: 10,
         });
 
-        setCalls(calls);
+        setCalls(response.calls);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching calls:", error);
+        // You could add toast notification here to inform user
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadCalls();
+    if (client && user?.id) {
+      loadCalls();
+    }
   }, [client, user?.id]);
 
   const now = new Date();
 
-  const endedCalls = calls?.filter(({ state: { startsAt, endedAt } }: Call) => {
-    return (startsAt && new Date(startsAt) < now) || !!endedAt
-  })
+  const endedCalls = calls?.filter(({ state: { startsAt, endedAt } }) => {
+    if (!startsAt) return false;
+    return endedAt || startsAt < now;
+  });
 
-  const upcomingCalls = calls?.filter(({ state: { startsAt } }: Call) => {
-    return startsAt && new Date(startsAt) > now
-  })
+  const upcomingCalls = calls?.filter(({ state: { startsAt } }) => {
+    if (!startsAt) return false;
+    return startsAt > now;
+  });
 
-  return { endedCalls, upcomingCalls, callRecordings: calls, isLoading }
+  return {
+    endedCalls,
+    upcomingCalls,
+    callRecordings: calls,
+    isLoading
+  };
 };

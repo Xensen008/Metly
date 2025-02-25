@@ -1,4 +1,5 @@
 'use client'
+import CallList from '@/components/CallList'
 import MeetingTypeList from '@/components/MeetingTypeList'
 import React, { useState, useEffect } from 'react'
 
@@ -42,6 +43,9 @@ const Home = () => {
       </div>
 
       <MeetingTypeList/> 
+      <CallList 
+        type='upcoming'
+      />
     </section>
   )
 }

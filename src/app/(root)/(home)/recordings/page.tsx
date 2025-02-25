@@ -1,3 +1,4 @@
+import CallList from '@/components/CallList'
 import React from 'react'
 
 const RecordingPage = () => {
@@ -6,6 +7,10 @@ const RecordingPage = () => {
       <h1 className='text-3xl font-bold'>
         Recorded meetings
       </h1>
+
+      <CallList 
+        type='recordings'
+      />
     </section>
   )
 }
