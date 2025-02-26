@@ -53,7 +53,7 @@ const MeetingCard = ({
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <h1 className="text-2xl font-bold line-clamp-1 hover:line-clamp-none text-gradient">
+            <h1 className="text-2xl font-bold line-clamp-1 hover:line-clamp-none bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
               {title}
             </h1>
             <p className="text-base font-normal text-gray-400/90">{date}</p>
@@ -124,14 +124,5 @@ const MeetingCard = ({
     </section>
   );
 };
-
-// Add this to your global CSS file
-const styles = `
-.text-gradient {
-  background: linear-gradient(to right, #fff, #a1a1aa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-`;
 
 export default MeetingCard;
