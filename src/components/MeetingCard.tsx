@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { avatarImages } from "../../constant";
+import { Download } from "lucide-react";
 
 interface MeetingCardProps {
   title: string;
@@ -16,6 +17,8 @@ interface MeetingCardProps {
   handleClick: () => void;
   link: string;
   className?: string; 
+  isRecording?: boolean;
+  recordingUrl?: string;
 }
 
 const MeetingCard = ({
@@ -28,7 +31,29 @@ const MeetingCard = ({
   link,
   buttonText,
   className,
+  isRecording,
+  recordingUrl,
 }: MeetingCardProps) => {
+  const handleDownload = async (url: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `recording-${Date.now()}.mp4`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+      
+      toast.success("Download started!");
+    } catch (error) {
+      console.error("Download error:", error);
+      toast.error("Failed to download recording");
+    }
+  };
+
   return (
     <section
       className={cn(
@@ -89,8 +114,8 @@ const MeetingCard = ({
           <>
             <Button
               onClick={handleClick}
-              className="rounded-full bg-gradient-to-r from-blue-1 to-blue-2 
-                       px-7 py-2.5 hover:opacity-90 transition-all duration-300 
+              className="rounded-full bg-blue-1 hover:bg-blue-2
+                       px-7 py-2.5 transition-all duration-300 
                        flex items-center gap-3 shadow-md"
             >
               {buttonIcon1 && (
@@ -98,6 +123,19 @@ const MeetingCard = ({
               )}
               <span className="font-medium">{buttonText}</span>
             </Button>
+
+            {isRecording && recordingUrl && (
+              <Button
+                onClick={() => handleDownload(recordingUrl)}
+                className="rounded-full bg-dark-4 hover:bg-dark-3 
+                         px-7 py-2.5 transition-all duration-300 
+                         flex items-center gap-3"
+              >
+                <Download className="h-5 w-5" />
+                <span className="font-medium">Download</span>
+              </Button>
+            )}
+
             <Button
               onClick={() => {
                 navigator.clipboard.writeText(link);

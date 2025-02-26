@@ -3,6 +3,7 @@
 import { Call, CallRecording } from '@stream-io/video-react-sdk';
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { AlertTriangle } from "lucide-react";
 
 import Loader from './Loader';
 import { useGetCalls } from '@/hooks/useGetCalls';
@@ -133,27 +134,35 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
     return (
         <div className="flex flex-col gap-6">
             {type === 'recordings' && (
-                <div className="flex justify-between items-center mb-2">
-                    <h2 className="text-xl font-semibold text-white">Your Recordings</h2>
-                    <button
-                        onClick={() => refreshRecordings()}
-                        className="bg-blue-1 hover:bg-blue-700 text-white py-2 px-4 rounded-full flex items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed"
-                        disabled={isRefreshing}
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            className={`transition-transform ${isRefreshing ? "animate-spin" : ""}`}
-                        >
-                            <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                        </svg>
-                        {isRefreshing ? 'Refreshing...' : 'Refresh'}
-                    </button>
-                </div>
+                <>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-semibold text-white">Your Recordings</h2>
+                            <button
+                                onClick={() => refreshRecordings()}
+                                className="bg-blue-1 hover:bg-blue-700 text-white py-2 px-4 rounded-full flex items-center gap-2 transition-all duration-200 shadow-md disabled:opacity-60 disabled:shadow-none disabled:cursor-not-allowed"
+                                disabled={isRefreshing}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    viewBox="0 0 16 16"
+                                    className={`transition-transform ${isRefreshing ? "animate-spin" : ""}`}
+                                >
+                                    <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                                </svg>
+                                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+                            </button>
+                        </div>
+                        <div className="flex items-center gap-2 text-yellow-200/80 bg-yellow-500/10 p-3 rounded-lg">
+                            <AlertTriangle className="h-5 w-5" />
+                            <p className="text-sm">Recordings will be automatically deleted after sometime. Please download to keep them.</p>
+                        </div>
+                    </div>
+                </>
             )}
 
             {/* Main content */}
@@ -217,6 +226,8 @@ const CallList = ({ type, limit }: { type: 'ended' | 'upcoming' | 'recordings'; 
                                         ? () => window.open((meeting as CallRecording).url, '_blank')
                                         : () => router.push(`/meeting/${(meeting as Call).id}`)
                                 }
+                                isRecording={type === 'recordings'}
+                                recordingUrl={isRecording(meeting) ? meeting.url : undefined}
                             />
                         );
                     })
