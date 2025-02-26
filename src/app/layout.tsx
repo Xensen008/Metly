@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Meetly",
-  description: "Meetly is a video conferencing app built with Next.js and Stream Chat.",
+  title: "Metly",
+  description: "Metly is a video conferencing app built with Next.js and Stream Chat.",
   icons:{
     icon:"/icons/logo.svg",
   }
