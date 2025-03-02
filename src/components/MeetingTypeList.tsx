@@ -71,32 +71,37 @@ const MeetingTypeList = () => {
     const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`;
 
     return (
-        <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
             <HomeCard
                 img="/icons/add-meeting.svg"
                 title="New Meeting"
-                description="Start an instant meeting"
+                description="Start an instant meeting with one click. Perfect for quick collaborations."
+                className="bg-gradient-to-br from-blue-600/20 via-blue-500/10 to-blue-400/5
+                         hover:from-blue-600/30 hover:via-blue-500/20 hover:to-blue-400/10"
                 handleClick={() => setMeetingState('isInstantMeeting')}
             />
             <HomeCard
                 img="/icons/join-meeting.svg"
                 title="Join Meeting"
-                description="via invitation link"
-                className="bg-blue-1"
+                description="Enter a meeting link to join an existing meeting session."
+                className="bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-400/5
+                         hover:from-emerald-600/30 hover:via-emerald-500/20 hover:to-emerald-400/10"
                 handleClick={() => setMeetingState('isJoiningMeeting')}
             />
             <HomeCard
                 img="/icons/schedule.svg"
                 title="Schedule Meeting"
-                description="Plan your meeting"
-                className="bg-yellow-1"
+                description="Plan ahead by scheduling meetings for your team."
+                className="bg-gradient-to-br from-amber-600/20 via-amber-500/10 to-amber-400/5
+                         hover:from-amber-600/30 hover:via-amber-500/20 hover:to-amber-400/10"
                 handleClick={() => setMeetingState('isScheduleMeeting')}
             />
             <HomeCard
                 img="/icons/recordings.svg"
-                title="View Recordings"
-                description="Meeting Recordings"
-                className="bg-purple-1"
+                title="Recordings"
+                description="Access and manage your previous meeting recordings."
+                className="bg-gradient-to-br from-purple-600/20 via-purple-500/10 to-purple-400/5
+                         hover:from-purple-600/30 hover:via-purple-500/20 hover:to-purple-400/10"
                 handleClick={() => router.push('/recordings')}
             />
 
@@ -106,32 +111,35 @@ const MeetingTypeList = () => {
                     onClose={() => setMeetingState(undefined)}
                     title="Create Meeting"
                     handleClick={createMeeting}
+                    className="bg-[#1a1a1a]"
                 >
-                    <div className="flex flex-col gap-2.5">
-                        <label className="text-base font-normal leading-[22.4px] text-sky-2">
-                            Add a description
-                        </label>
-                        <Textarea
-                            className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
-                            onChange={(e) =>
-                                setValues({ ...values, Description: e.target.value })
-                            }
-                        />
-                    </div>
-                    <div className="flex w-full flex-col gap-2.5">
-                        <label className="text-base font-normal leading-[22.4px] text-sky-2">
-                            Select Date and Time
-                        </label>
-                        <ReactDatePicker
-                            selected={values.datetime}
-                            onChange={(date) => setValues({ ...values, datetime: date! })}
-                            showTimeSelect
-                            timeFormat="HH:mm"
-                            timeIntervals={15}
-                            timeCaption="time"
-                            dateFormat="MMMM d, yyyy h:mm aa"
-                            className="w-full rounded bg-dark-3 p-2 focus:outline-none"
-                        />
+                    <div className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm text-gray-400">
+                                Description
+                            </label>
+                            <Textarea
+                                className="bg-gray-800/30 border-0 focus-visible:ring-1 focus-visible:ring-gray-600"
+                                onChange={(e) =>
+                                    setValues({ ...values, Description: e.target.value })
+                                }
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-gray-400">
+                                Date and Time
+                            </label>
+                            <ReactDatePicker
+                                selected={values.datetime}
+                                onChange={(date) => setValues({ ...values, datetime: date! })}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={15}
+                                timeCaption="time"
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                className="w-full rounded-lg bg-gray-800/30 p-2.5 text-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-600"
+                            />
+                        </div>
                     </div>
                 </MeetingModal>
             ) : (
@@ -154,14 +162,14 @@ const MeetingTypeList = () => {
                 isOpen={meetingState === 'isJoiningMeeting'}
                 onClose={() => setMeetingState(undefined)}
                 title="Type the link here"
-                className="text-center"
+                className="text-center bg-[#1a1a1a]"
                 buttonText="Join Meeting"
                 handleClick={() => router.push(values.link)}
             >
                 <Input
-                    placeholder="Meeting link"
+                    placeholder="Paste meeting link"
                     onChange={(e) => setValues({ ...values, link: e.target.value })}
-                    className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+                    className="bg-gray-800/30 border-0 focus-visible:ring-1 focus-visible:ring-gray-600"
                 />
             </MeetingModal>
 
@@ -169,12 +177,12 @@ const MeetingTypeList = () => {
                 isOpen={meetingState === 'isInstantMeeting'}
                 onClose={() => setMeetingState(undefined)}
                 title="Start an Instant Meeting"
-                className="text-center"
+                className="text-center bg-[#1a1a1a]"
                 buttonText="Start Meeting"
                 handleClick={createMeeting}
             />
 
-        </section>
+        </div>
     )
 }
 

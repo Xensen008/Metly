@@ -68,24 +68,24 @@ const UpcomingMeetingBanner = ({ className }: UpcomingMeetingBannerProps) => {
 
   if (isLoading) {
     return (
-      <h2 className={`glassmorphism max-w-[350px] rounded py-2 text-base text-center font-normal ${className}`}>
-        Loading upcoming meetings...
-      </h2>
+      <div className="rounded-xl bg-black/30 backdrop-blur-md border border-white/10 p-4 w-fit">
+        <p className="text-white font-medium">Loading upcoming meetings...</p>
+      </div>
     );
   }
 
   if (!nextMeeting) {
     return (
-      <h2 className={`glassmorphism max-w-[350px] rounded py-2 text-base text-center font-normal ${className}`}>
-        No upcoming meetings
-      </h2>
+      <div className="rounded-xl bg-black/30 backdrop-blur-md border border-white/10 p-4 w-fit">
+        <p className="text-white font-medium">No upcoming meetings</p>
+      </div>
     );
   }
 
   return (
-    <h2 className={`glassmorphism max-w-[350px] rounded py-2 text-base text-center font-normal ${className}`}>
-      Upcoming meeting at {formatMeetingTime(nextMeeting.date)}
-    </h2>
+    <div className="rounded-xl bg-black/30 backdrop-blur-md border border-white/10 p-4 w-fit">
+      <p className="text-white font-medium">Upcoming meeting at {formatMeetingTime(nextMeeting.date)}</p>
+    </div>
   );
 };
 
