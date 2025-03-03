@@ -32,10 +32,14 @@ const MeetingModal = ({
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className={cn(
                 "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]",
-                "w-full max-w-[480px] rounded-2xl",
+                "w-[calc(100%-2rem)] sm:w-full max-w-[480px]", // Adjusted width calculation
+                "mx-auto", // Centered horizontally
+                "rounded-2xl",
                 "border border-white/[0.08] bg-dark-2/95 backdrop-blur-xl",
-                "p-6 sm:p-8 text-white",
-                "z-50"
+                "p-5 sm:p-6 md:p-8",
+                "shadow-xl",
+                "z-50",
+                className
             )}>
                 <DialogHeader>
                     <DialogTitle className="sr-only">{title}</DialogTitle>

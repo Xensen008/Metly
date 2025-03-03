@@ -16,19 +16,20 @@ const HomeCard = ({ img, title, description, className, handleClick }: HomeCardP
             onClick={handleClick}
             className={cn(
                 'group relative overflow-hidden',
-                'rounded-xl p-6 sm:p-7',
+                'min-h-[140px] aspect-[3/2] sm:aspect-square', // Changed aspect ratio for mobile
+                'rounded-xl p-4 sm:p-6',
                 'transition-all duration-300 ease-out',
                 'hover:scale-[1.02] hover:-translate-y-1',
                 'bg-gradient-to-br from-dark-2/80 via-dark-1/90 to-dark-2/80',
-                'cursor-pointer w-full min-h-[160px] sm:min-h-[180px]', // Increased height
+                'cursor-pointer w-full',
                 'border border-white/[0.08]',
                 'hover:shadow-lg hover:border-white/[0.15]',
-                'flex flex-col gap-5', // Changed to flex-col
+                'flex flex-col',
                 className
             )}
         >
             {/* Icon Container */}
-            <div className="flex-shrink-0 flex-center size-12 rounded-xl 
+            <div className="flex-shrink-0 flex-center size-10 sm:size-12 rounded-xl 
                         bg-dark-3/50 border border-dark-3/30
                         shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]
                         transition-all duration-300 group-hover:scale-105
@@ -36,27 +37,29 @@ const HomeCard = ({ img, title, description, className, handleClick }: HomeCardP
                 <Image 
                     src={img} 
                     alt={title} 
-                    width={24} 
-                    height={24} 
+                    width={20}
+                    height={20}
                     className="opacity-80 transition-all duration-300 
                              group-hover:opacity-100 group-hover:scale-110" 
                 />
             </div>
 
             {/* Content Container */}
-            <div className="flex flex-col gap-2">
-                <h2 className="text-lg font-semibold 
-                           bg-gradient-to-r from-white to-white/80 
-                           bg-clip-text text-transparent">
-                    {title}
-                </h2>
-                <p className="text-sm font-medium text-white/60 
-                          leading-relaxed max-w-[90%]">
-                    {description}
-                </p>
+            <div className="flex flex-col justify-between flex-1 mt-3 sm:mt-4">
+                <div className="space-y-1.5 sm:space-y-2">
+                    <h2 className="text-sm sm:text-lg font-semibold 
+                               bg-gradient-to-r from-white to-white/80 
+                               bg-clip-text text-transparent">
+                        {title}
+                    </h2>
+                    <p className="text-xs sm:text-sm font-medium text-white/60 
+                              leading-relaxed line-clamp-3 sm:line-clamp-2">
+                        {description}
+                    </p>
+                </div>
             </div>
 
-            {/* Hover Effects */}
+            {/* Background Effects */}
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute inset-0 bg-gradient-to-br 
                              from-blue-1/[0.02] to-purple-1/[0.02] 

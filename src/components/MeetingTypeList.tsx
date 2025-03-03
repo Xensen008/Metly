@@ -71,11 +71,11 @@ const MeetingTypeList = () => {
     const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`;
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
             <HomeCard
                 img="/icons/add-meeting.svg"
                 title="New Meeting"
-                description="Start an instant meeting with one click. Perfect for quick collaborations."
+                description="Create and start an instant meeting. Perfect for quick collaborations and impromptu discussions."
                 className="bg-gradient-to-br from-blue-600/20 via-blue-500/10 to-blue-400/5
                          hover:from-blue-600/30 hover:via-blue-500/20 hover:to-blue-400/10"
                 handleClick={() => setMeetingState('isInstantMeeting')}
@@ -83,7 +83,7 @@ const MeetingTypeList = () => {
             <HomeCard
                 img="/icons/join-meeting.svg"
                 title="Join Meeting"
-                description="Enter a meeting link to join an existing meeting session."
+                description="Enter a meeting link to join an existing session. Connect with your team instantly."
                 className="bg-gradient-to-br from-emerald-600/20 via-emerald-500/10 to-emerald-400/5
                          hover:from-emerald-600/30 hover:via-emerald-500/20 hover:to-emerald-400/10"
                 handleClick={() => setMeetingState('isJoiningMeeting')}
@@ -91,7 +91,7 @@ const MeetingTypeList = () => {
             <HomeCard
                 img="/icons/schedule.svg"
                 title="Schedule Meeting"
-                description="Plan ahead by scheduling meetings for your team."
+                description="Schedule a meeting"
                 className="bg-gradient-to-br from-amber-600/20 via-amber-500/10 to-amber-400/5
                          hover:from-amber-600/30 hover:via-amber-500/20 hover:to-amber-400/10"
                 handleClick={() => setMeetingState('isScheduleMeeting')}
@@ -99,7 +99,7 @@ const MeetingTypeList = () => {
             <HomeCard
                 img="/icons/recordings.svg"
                 title="Recordings"
-                description="Access and manage your previous meeting recordings."
+                description="Manage recordings"
                 className="bg-gradient-to-br from-purple-600/20 via-purple-500/10 to-purple-400/5
                          hover:from-purple-600/30 hover:via-purple-500/20 hover:to-purple-400/10"
                 handleClick={() => router.push('/recordings')}
