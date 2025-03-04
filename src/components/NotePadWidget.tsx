@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Pencil, ChevronRight, ChevronLeft, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
 import NotesModal from './NotesModal';
 
 interface Note {
